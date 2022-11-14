@@ -1,0 +1,32 @@
+using sysbus
+$name?="S32K118_LPIT_GPIO"
+mach create $name
+machine LoadPlatformDescription @platforms\cpus\s32k118.repl
+machine LoadPlatformDescription @C:\Users\ltmin\renode_ws\s32k118_led.repl
+
+$bin?=@C:\Users\ltmin\workspaceS32DS.ARM.2.2\lpit_periodic_interrupt_s32k118\Debug_FLASH\lpit_periodic_interrupt_s32k118.elf
+#$bin?=@"C:\Users\ltmin\workspaceS32DS.ARM.2.2\hello_world_s32k118\Debug_FLASH\hello_world_s32k118.elf"
+#$bin?=@C:\Users\ltmin\workspaceS32DS.ARM.2.2\lpuart_echo_s32k118\Debug_FLASH\lpuart_echo_s32k118.elf
+#$bin?=@C:\Users\ltmin\workspaceS32DS.ARM.2.2\lpspi_dma_s32k118\Debug_FLASH\lpspi_dma_s32k118.elf
+#$bin?=@C:\Users\ltmin\workspaceS32DS.ARM.2.2\lptmr_pulse_counter_s32k118\Debug_FLASH\lptmr_pulse_counter_s32k118.elf
+showAnalyzer lpuart1
+
+#sysbus LogAllPeripheralsAccess true
+#sysbus.cpu LogFunctionNames true
+
+emulation CreateLEDTester "lt" portC.led0
+
+macro reset
+"""
+    sysbus LoadELF $bin
+    
+"""
+
+runMacro $reset
+start
+
+#lt AssertState True 1
+#portD WriteDoubleWordToGPIO 5 1
+#portC ReadDoubleWordFromGPIO 0
+#portD WriteDoubleWordToGPIO 5 0
+#portC ReadDoubleWordFromGPIO 0

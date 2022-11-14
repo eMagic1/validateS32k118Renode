@@ -1,0 +1,4 @@
+portC:
+    1      -> led0@0
+
+led0: Miscellaneous.LED @ portC 1
